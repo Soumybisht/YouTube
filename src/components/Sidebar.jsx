@@ -9,7 +9,7 @@ const Sidebar = () => {
   if(!isMenuOpen) return null;
   //fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-64 dark:bg-gray-800
   return (
-    <div className='sticky w-50 p-3 m-2 flex flex-col border border-slate-200 shadow-lg col-span-2 top-0 left-0 transition-transform translate-x-52 '>
+    <div className='sticky w-50 p-3 m-2 flex flex-col border border-slate-200 shadow-lg col-span-2'>
       <div className='p-1 m-2'>
         <ul>
             <li className='p-1'><Link to="/">Home</Link></li>
