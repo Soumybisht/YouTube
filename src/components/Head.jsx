@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../Utils/appSlice';
 import { YOUTUBE_SEARCH_API } from '../Utils/constants';
+import { cacheSearch } from '../Utils/searchSlice';
 
 const Head = () => {
 
   const [searchQuery,setSearchQuery] = useState("");
   const [suggestions,setSuggestions] = useState([]);
   const [isFocus,setIsFocus] = useState(false);
+
+  const searchCache = useSelector((store)=>store.search);
   useEffect(()=>{
 
-    const timer = setTimeout(()=>searchingCall(),200);
+    const timer = setTimeout(()=>{
+      if(searchCache[searchQuery]){
+        setSuggestions(searchCache[searchQuery]);
+      }
+      else{
+        searchingCall();
+      }
+    },200);
 
     return ()=>{
       clearTimeout(timer);
     }
   },[searchQuery]);
+
+
     const dispatch = useDispatch();
     const handleToggleBar = ()=>{
         dispatch(toggleMenu());
@@ -26,10 +38,15 @@ const Head = () => {
       const data = await fetch(YOUTUBE_SEARCH_API+searchQuery);
       const json = await data.json();
       setSuggestions(json[1]);
+      dispatch(cacheSearch(
+        {
+          [searchQuery] : json[1],
+        }
+      ));
     }
 
   return (
-    <div className='grid grid-flow-col m-2  p-2 shadow-lg sticky top-0 bg-white'>
+    <div className='grid grid-flow-col m-2  p-2 shadow-lg sticky top-0 bg-white z-10'>
       <div className='flex col-span-1'>
         <img onClick={()=> handleToggleBar()} className='h-8 m-2 cursor-pointer' src="https://images.icon-icons.com/2036/PNG/512/menu_circular_button_burger_icon_124214.png" alt="" />
         <img className='h-9 m-2' src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/YouTube_Logo_2017.svg/2560px-YouTube_Logo_2017.svg.png" alt="" />
