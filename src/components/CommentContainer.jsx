@@ -23,7 +23,7 @@ const Comment = ({data})=>{
                 <div>
                     <Comment key={index} data={comment} />
                     <div className='ml-5 pl-5 border border-l-black'>
-                    <CommentsList comments={comment.replies} />
+                    <CommentsList key={index} comments={comment.replies} />
                     </div>
                 </div>
                 
@@ -34,7 +34,7 @@ const Comment = ({data})=>{
 
 const CommentContainer = () => {
   return (
-    <div className='m-5 p-2 w-2/3 '>
+    <div className='mt-5 p-2 w-2/3 '>
       <h1 className='font-bold text-2xl mb-5'>Comments: </h1>
       <CommentsList comments={CommentsData} />
         </div>
